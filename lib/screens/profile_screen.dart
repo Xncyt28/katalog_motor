@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profile App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ProfileScreen(),
-    );
-  }
-}
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:katalog_motor/screens/sign_in_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  Future<void> signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SignInScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,17 +27,23 @@ class ProfileScreen extends StatelessWidget {
               backgroundImage: AssetImage('assets/profile_image.jpg'),
             ),
             SizedBox(height: 20),
-            Text(
-              'Nama Pengguna',
-              style: TextStyle(fontSize: 20),
+            ListTile(
+              title: Text(
+                'Nama Pengguna',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            Text(
-              'Nomor Handphone',
-              style: TextStyle(fontSize: 16),
+            ListTile(
+              title: Text(
+                'Nomor Handphone',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
-            Text(
-              'Email',
-              style: TextStyle(fontSize: 16),
+            ListTile(
+              title: Text(
+                'Email',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -62,33 +62,7 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.upload),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-        ],
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black,
-      ),
     );
   }
 }
+

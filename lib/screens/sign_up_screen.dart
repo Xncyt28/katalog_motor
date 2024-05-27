@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:katalog_motor/screens/home_screen.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
   @override

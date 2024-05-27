@@ -1,41 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:katalog_motor/screens/home_screen.dart';
+import 'package:katalog_motor/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:katalog_motor/screens/profile_screen.dart';
 import 'package:katalog_motor/screens/sign_in_screen.dart';
 import 'package:katalog_motor/screens/sign_up_screen.dart';
 import 'package:katalog_motor/screens/add_post_screen.dart';
-void main() {
+import 'package:katalog_motor/screens/search_screen.dart';
+import 'package:katalog_motor/screens/chat_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/' : (context) => MainScreen(),
-        // '/signin' : (context) => SignInScreen(),
-        // '/signup' : (context) => SignUpScreen(),
-        // '/profil': (context) => ProfileScreen(),
-      },
+      // initialRoute: '/',
+      // routes: {
+      //   '/' : (context) => MainScreen(),
+      //   // '/signin' : (context) => SignInScreen(),
+      //   // '/signup' : (context) => SignUpScreen(),
+      //   // '/profil': (context) => ProfileScreen(),
+      // },
       debugShowCheckedModeBanner: false,
       title: 'Katalog Motor',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.blueAccent),
           titleTextStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.blueAccent,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
             .copyWith(secondary: Colors.deepPurple[50]),
-        // useMaterial3: true, // Remove this line if not required
+        useMaterial3: true, // Remove this line if not required
+      ),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          } else {
+            return const SignInScreen();
+          }
+        },
       ),
     );
   }
@@ -49,13 +67,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // TODO : 1. Deklerasikan variabel
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeScreen(),
-    // SearchScreen(),
-    // FavoriteScreen(),
-    // ProfileScreen(),
+    SearchScreen(),
+    AddPostScreen(),
+    ChatScreen(), //
+    ProfileScreen(),
   ];
   // This widget is the root of your application.
   @override
@@ -95,8 +113,8 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Profile',
             ),
           ],
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.grey,
+          unselectedItemColor: Colors.blueAccent,
           showUnselectedLabels: true,
         ),
       ),

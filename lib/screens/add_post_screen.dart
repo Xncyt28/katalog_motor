@@ -29,9 +29,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
       // Upload image and get URL if not on web
       if (!kIsWeb) {
         String? imageUrl = await _uploadImage(image);
-        setState(() {
-          _imageUrl = imageUrl;
-        });
+        if (imageUrl != null) {
+          setState(() {
+            _imageUrl = imageUrl;
+          });
+        } else {
+          setState(() {
+            _image = null; // Reset _image if uploading failed
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Gagal mengunggah gambar. Silakan coba lagi.'),
+            ),
+          );
+        }
       } else {
         setState(() {
           _imageUrl = image.path;
@@ -39,6 +50,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       }
     }
   }
+
 
   Future<String?> _uploadImage(XFile image) async {
     try {
