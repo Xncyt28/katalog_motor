@@ -1,154 +1,67 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:katalog_motor/service/services_add_post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-class AddPostScreen extends StatefulWidget {
-  @override
-  _AddPostScreenState createState() => _AddPostScreenState();
-}
+class AddPostServices {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-class _AddPostScreenState extends State<AddPostScreen> {
-  final TextEditingController _postTitleController = TextEditingController();
-  final TextEditingController _postDescriptionController =
-  TextEditingController();
-  final TextEditingController _postHargaController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-  XFile? _image;
-  String? _imageUrl;
-  final AddPostServices _services = AddPostServices();
-
-  Future<void> _getImageFromCamera() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedFile != null) {
-        _image = pickedFile;
-        if (kIsWeb) {
-          _imageUrl = pickedFile.path;
-        }
-      }
-    });
-  }
-
-  Future<void> _postContent() async {
-    if (_postTitleController.text.isNotEmpty &&
-        _postDescriptionController.text.isNotEmpty &&
-        _postHargaController.text.isNotEmpty &&
-        _image != null) {
-      try {
-        final harga = double.parse(_postHargaController.text);
-        final imageUrl = await _services.uploadImage(_image!);
-        if (imageUrl != null) {
-          await _services.tambahPost(
-            _postTitleController.text,
-            _postDescriptionController.text,
-            Timestamp.now(),
-            imageUrl,
-            harga,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Posting berhasil!')),
-          );
-          setState(() {
-            _postTitleController.clear();
-            _postDescriptionController.clear();
-            _postHargaController.clear();
-            _image = null;
-            _imageUrl = null;
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal mengunggah gambar')),
-          );
-        }
-      } catch (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memposting: $error')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lengkapi semua field terlebih dahulu!')),
-      );
+  Future<void> tambahPost(String title, String description, Timestamp date,
+      String urlImage, double harga) async {
+    try {
+      await _firestore.collection('posts').add({
+        'title': title,
+        'descr': description,
+        'urlimage': urlImage,
+        'time': date,
+        'harga': harga,
+      });
+    } catch (e) {
+      throw Exception('Gagal Melakukan Postings: $e');
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tambah Postingan'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            GestureDetector(
-              onTap: _getImageFromCamera,
-              child: Container(
-                height: 200,
-                color: Colors.grey[200],
-                child: _image != null
-                    ? kIsWeb
-                    ? (_imageUrl != null
-                    ? Image.network(
-                  _imageUrl!,
-                  fit: BoxFit.cover,
-                )
-                    : Icon(
-                  Icons.error,
-                  size: 100,
-                  color: Colors.red,
-                ))
-                    : Image.file(
-                  File(_image!.path),
-                  fit: BoxFit.cover,
-                )
-                    : Icon(
-                  Icons.camera_alt,
-                  size: 100,
-                  color: Colors.grey[400],
-                ),
-                alignment: Alignment.center,
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _postTitleController,
-              decoration: const InputDecoration(
-                hintText: 'Judul postingan',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _postDescriptionController,
-              maxLines: null,
-              decoration: const InputDecoration(
-                hintText: 'Tulis deskripsi postingan Anda di sini...',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _postHargaController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                hintText: 'Harga',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _postContent,
-              child: const Text('Posting'),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<String?> uploadImage(XFile image) async {
+    try {
+      final storageRef = _storage
+          .ref()
+          .child('images/post_images/${DateTime.now().toIso8601String()}');
+
+      if (kIsWeb) {
+        // For web, use putData
+        final bytes = await image.readAsBytes();
+        final uploadTask = storageRef.putData(bytes);
+        final snapshot = await uploadTask;
+        return await snapshot.ref.getDownloadURL();
+      } else {
+        // For mobile, use putFile
+        final uploadTask = storageRef.putFile(File(image.path));
+        final snapshot = await uploadTask;
+        return await snapshot.ref.getDownloadURL();
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getPosts() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('posts')
+          .orderBy('time', descending: true)
+          .get();
+      List<Map<String, dynamic>> posts = [];
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> post = doc.data() as Map<String, dynamic>;
+        posts.add(post);
+      });
+      return posts;
+    } catch (e) {
+      print('Error fetching posts: $e');
+      return [];
+    }
   }
 }

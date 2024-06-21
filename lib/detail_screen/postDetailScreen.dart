@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:katalog_motor/detail_screen/CommentsScreen.dart';
+import 'package:katalog_motor/detail_screen/CommentScreen.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final Map<String, dynamic> post;
