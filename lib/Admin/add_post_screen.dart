@@ -79,7 +79,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tambah Postingan'),
+        title: Text('Tambah Postingan Disini'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -128,7 +128,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               controller: _postDescriptionController,
               maxLines: null,
               decoration: const InputDecoration(
-                hintText: 'Tulis deskripsi postingan Anda di sini...',
+                hintText: 'Silahkan tulis deskripsi postingan Anda di sini...',
                 border: OutlineInputBorder(),
               ),
             ),

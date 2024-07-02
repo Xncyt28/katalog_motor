@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: ListTile(
                       leading: const Icon(Icons.phone, color: Colors.blue),
                       title: Text(
-                        userData['phone'] ?? 'Nomor Handphone',
+                        userData['phone'] ?? 'No Handphone',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       leading:
                           const Icon(Icons.location_on, color: Colors.blue),
                       title: Text(
-                        userData['address'] ?? 'Address',
+                        userData['address'] ?? 'Alamat',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),

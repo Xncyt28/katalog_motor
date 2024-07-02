@@ -88,7 +88,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: const InputDecoration(
-                        hintText: 'Add a comment...',
+                        hintText: 'tambahkan komen disini..',
                       ),
                     ),
                   ),

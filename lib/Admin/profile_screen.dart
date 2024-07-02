@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: ListTile(
                       leading: const Icon(Icons.phone, color: Colors.blue),
                       title: Text(
-                        userData['phone'] ?? 'Nomor Handphone',
+                        userData['phone'] ?? 'No Handphone',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
@@ -89,19 +89,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       leading: const Icon(Icons.email, color: Colors.blue),
                       title: Text(
                         userData['email'] ?? 'Email',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    elevation: 4.0,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    child: ListTile(
-                      leading:
-                      const Icon(Icons.location_on, color: Colors.blue),
-                      title: Text(
-                        userData['address'] ?? 'Address',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),

@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: 'Search',
+                labelText: 'Silahkan cari disini',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {
@@ -139,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 Text(
                                   formattedDate,
                                   style: const TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.white,
                                     fontSize: 12,
                                   ),
                                 ),
