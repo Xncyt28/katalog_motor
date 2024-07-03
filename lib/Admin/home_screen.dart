@@ -5,7 +5,7 @@ import 'package:katalog_motor/Admin/add_post_screen.dart';
 import 'package:katalog_motor/detail_screen/postDetailScreen.dart';
 import 'package:katalog_motor/sign_in_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:katalog_motor/service/services_add_post.dart';
+import 'package:katalog_motor/service/service_add_post.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

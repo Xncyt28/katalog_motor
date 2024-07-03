@@ -35,7 +35,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Comments'),
+        title: const Text('Comments About Motor'),
       ),
       body: Container(
         color: Colors.white,

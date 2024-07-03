@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (user != null) {
       return await UserServices().getUserData(user.uid);
     } else {
-      throw Exception('User not logged in');
+      throw Exception('Pengguna belum login');
     }
   }
 
