@@ -1,6 +1,7 @@
-# tugas_proyek_katalog_motor
+# tugas_kelompok_proyek_katalog_motor
+# Anggota : Achmad Daffa Fattah, Putra Ulung, Khoirul Umam, Isnaeni Putri Hijriyah, Syabina Najla A.
 
-A new Flutter project.
+A new Flutter project for Study PAB 2.
 
 ## Getting Started
 
