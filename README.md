@@ -1,17 +1,7 @@
 # tugas_kelompok_proyek_katalog_motor
 # Anggota : Achmad Daffa Fattah, Putra Ulung, Khoirul Umam, Isnaeni Putri Hijriyah, Syabina Najla A.
 
-A new Flutter project for Study PAB 2.
+Proyek Flutter untuk menyelesaikan Program Studi PAB 2.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Aplikasi ini merupakan aplikas katalog motor untuk membantu penjualan secara online
+# Aplikasi ini bisa diakses oleh 2 user yaitu admin dan pelanggan
